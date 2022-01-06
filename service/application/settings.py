@@ -232,7 +232,15 @@ if DATABASE_TYPE == "MYSQL":
             "USER": DATABASE_USER,
             "PASSWORD": DATABASE_PASSWORD,
             "NAME": DATABASE_NAME,
-        }
+        },
+        'ora1': {   # 配置第二个数据库节点名称 
+            'ENGINE': 'django.db.backends.oracle',
+            'NAME': 'devdb',
+            'USER': 'hysh',
+            'PASSWORD': 'hysh',
+            'HOST': '192.168.191.3',
+            'PORT': '1521',
+        },
     }
 else:
     # sqlite3 数据库
@@ -242,7 +250,14 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-
+DATABASE_APPS_MAPPING = {
+    # example:
+    # 'app_name':'database_name',
+    'report': 'ora1',
+    'admin': 'defualt',
+    'regs':  'defualt',
+}
+DATABASE_ROUTERS = ['Prject.database_router.DatabaseAppsRouter']
 # redis 缓存
 REDIS_URL = f'redis://:{REDIS_PASSWORD if REDIS_PASSWORD else ""}@{os.getenv("REDIS_HOST") or REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 # 是否启用redis
